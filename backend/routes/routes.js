@@ -29,7 +29,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/logout', (req, res, next) => {
   if(req.user) { 
-    res.logout();
+    //req.logout();
     res.status('200')
       .json({
         user: null,
@@ -45,6 +45,13 @@ router.get('/logout', (req, res, next) => {
         err: null
       })
   }
-}) 
+})
 
+//Test route problems when deserializing
+router.get('/alejo', (req, res, next) => {
+    res.status('200')
+      .json({
+        message: 'Hello Alejo',
+      })
+}) 
 module.exports = router;
