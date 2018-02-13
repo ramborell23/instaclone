@@ -1,4 +1,8 @@
-const db = require("./index");
+var pgp = require("pg-promise")({});
+var connectionString = "postgres://localhost/instagran_db";
+var db = pgp(connectionString);
+
+const helpers = require('../auth/helpers');
 
 const getUserByUsername = (username, callback) => {
   db
@@ -15,10 +19,10 @@ const getUserByUsername = (username, callback) => {
 const registerUser = (user, callback) => {
     const newUser = {
         username: user.username,
-        passwordDigest: authHelpers.generatePasswordDigest(user.password)
+        passwordDigest: helpers.generatePasswordDigest(user.password),
     }
 
-    db.none('INSERT INTO users(username, passport_digest) VALUES (${username}, ${passwordDigest})', newUser)
+    db.none('INSERT INTO users(username, password_digest) VALUES (${username}, ${passwordDigest})', newUser)
     .then(() => callback(null))
     .catch(err => callback(err))
 }
