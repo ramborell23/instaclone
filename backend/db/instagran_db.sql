@@ -18,7 +18,7 @@ CREATE TABLE followInfo (
 
 CREATE TABLE posts (
     ID SERIAL PRIMARY KEY,
-    owner_id VARCHAR,
+    owner_id int,
     imageUrl VARCHAR,
     likes json
 );
