@@ -1,13 +1,11 @@
-var pgp = require("pg-promise")({});
-var connectionString = "postgres://localhost/instagran_db";
+var pgp = require('pg-promise')({});
+var connectionString = 'postgres://localhost/instagran_db';
 var db = pgp(connectionString);
 
 const helpers = require('../auth/helpers');
 
 const getUserByUsername = (username, callback) => {
-  db
-    .any(
-      "SELECT * FROM users WHERE username = ${username}",
+  db.any('SELECT * FROM users WHERE username = ${username}',
       {username: username}
     )
     .then(data => callback(null, data[0]))
@@ -30,20 +28,19 @@ const registerUser = (user, callback) => {
 }
 
 const getPosts = (username, callback) => {
-  db
-    .any(
-      "SELECT * FROM posts WHERE owner_id = (SELECT id FROM users WHERE username = ${username})",
-      {username:username}
+  db.any('SELECT * FROM posts WHERE owner_id = (SELECT id FROM users WHERE username = ${username})',
+    {username:username}
     )
     .then(data => callback(null, data))
     .catch(err => callback(err, false));
 };
 
 const getFeed = (username, callback) => {
-  db
-    .any(
-      "SELECT * FROM posts WHERE owner_id = ANY(SELECT follower_id FROM followinfo INNER JOIN users ON followinfo.owner_id = users.id WHERE users.username = ${username})",
-      {username:username}
+  db.any('SELECT * FROM posts' + 
+         'WHERE owner_id = ANY(' +
+         'SELECT follower_id FROM followinfo' +
+         'INNER JOIN users ON followinfo.owner_id = users.id WHERE users.username = ${username})',
+         {username:username}
     )
     .then(data => callback(null, data))
     .catch(err => callback(err, false));

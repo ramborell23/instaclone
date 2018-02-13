@@ -5,12 +5,10 @@ const helpers = require('./helpers');
 
 //Session configuration
 passport.serializeUser((user, done) => {
-  console.log('SERIALIZING ====>')
-  done(null, user.id)
+  done(null, user.username)
 });
 
 passport.deserializeUser((username, done) => {
-  console.log('DESERIALIZING ====>')
   dbAPI.getUserByUsername(username, (err, user) => {
     done(err, user)
   })
