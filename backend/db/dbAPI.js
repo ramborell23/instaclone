@@ -18,11 +18,13 @@ const getUserByUsername = (username, callback) => {
 
 const registerUser = (user, callback) => {
     const newUser = {
-        username: user.username,
+        userName: user.username,
+        fullName: user.fullname,
         passwordDigest: helpers.generatePasswordDigest(user.password),
+        profilePicUrl: user.profilePicUrl    
     }
-
-    db.none('INSERT INTO users(username, password_digest) VALUES (${username}, ${passwordDigest})', newUser)
+    db.none('INSERT INTO users(username, fullname, password_digest, profile_pic)' +
+            'VALUES (${userName}, ${fullName}, ${passwordDigest}, ${profilePicUrl})', newUser)
     .then(() => callback(null))
     .catch(err => callback(err))
 }
