@@ -29,7 +29,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 router.get('/logout', (req, res, next) => {
   if(req.user) { 
-    //req.logout();
+    req.logout();
     res.status('200')
       .json({
         user: null,
@@ -49,6 +49,7 @@ router.get('/logout', (req, res, next) => {
 
 //Test route problems when deserializing
 router.get('/alejo', (req, res, next) => {
+  console.log('USER COMMING TO /alejo', req.user)
     res.status('200')
       .json({
         message: 'Hello Alejo',

@@ -25,7 +25,9 @@ passport.use(
         //If none of the above then all went well
         const userWithoutPassword = {
           id: user.id,
-          username: user.username
+          username: user.username,
+          fullname: user.fullname,
+          profilePicUrl: user.profile_pic
         }
         return done(null, userWithoutPassword)
       })
