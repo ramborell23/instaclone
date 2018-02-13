@@ -23,7 +23,7 @@ passport.use(
       dbAPI.getUserByUsername(username, (err, user) => {
         if(err) return done(err);
         if(!user) return done(null, false);
-        if(!helpers.comparePassword(password, user.password_digest)) return done(null, false);
+        if(!helpers.comparePasswords(password, user.password_digest)) return done(null, false);
         //If none of the above then all went well
         const userWithoutPassword = {
           id: user.id,
