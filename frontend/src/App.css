@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background: #fafafa;
 }
 
 .App-logo {
@@ -7,12 +8,41 @@
   height: 80px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.App-newUser {
+background: white;
+border: solid 1px #e6e6e6;
+height: 400px;
+width: 400px;
+margin-left:725px;
+margin-top:25px;
 }
+.App-register {
+  background: white;
+  border: solid 1px #e6e6e6;
+  height: 50px;
+  width: 400px;
+  margin-left:725px;
+  margin-top:10px;
+  }
+
+.App-header {
+background-color: #fafafa;
+}
+.formItems {
+  background-color: #fafafa;
+  padding: 9px 60px 7px 5px;
+  margin: 10px;
+  font-weight: bold;
+  color: grey;
+  }
+#signUpButton {
+  background-color: #3897f0;
+  border-radius: 5px;
+  padding: 9px 75px 7px 75px;
+  margin: 10px;
+  font-weight: bold;
+  color: white;
+  }
 
 .App-title {
   font-size: 1.5em;
@@ -20,6 +50,16 @@
 
 .App-intro {
   font-size: large;
+  background-image: url(front.jpg);
+}
+
+.App-frontpage {
+  background-color: #fafafa;
+  height: 900px;
+  padding: 20px;
+  color: black;
+  background-image: url(front.jpg);
+  background-repeat: no-repeat;
 }
 
 @keyframes App-logo-spin {

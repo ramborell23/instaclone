@@ -1,5 +1,35 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
+
+body{
+  font-size: 14px;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0px;
+  background-color: white;
+  height: 100%; 
+}
+
+.buttons {
+  cursor: pointer;
+  box-shadow: 12px -12px 2px 1px rgb(7, 164, 255);
+}
+
+a:link {
+  color:  #3897f0;
+  text-decoration: none; 
+}
+
+a:visited {
+  color:  #3897f0;
+  text-decoration: none; 
+}
+
+a:hover {
+  color:  #3897f0;
+  text-decoration: none; 
+}
+
+a:active {
+  color:  #3897f0;
+  text-decoration: none; 
 }
