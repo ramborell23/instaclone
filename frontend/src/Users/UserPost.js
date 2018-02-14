@@ -17,6 +17,8 @@ const styles = {
     }
 };
 
+
+
 const Post = ({ postArr }) => (
     <div class ="post_pics_container">
         {postArr.map(image => (

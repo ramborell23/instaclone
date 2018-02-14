@@ -161,3 +161,20 @@ a:link {
   /* padding-right: 5em; */
   margin: 1em
 }
+
+.user_feed_item{
+  padding-top: 13em;
+  border: 0.5em red solid;
+  display: flex
+
+
+}
+
+.feed_item_main_container{
+  padding-top: 183em;
+  border: 0.5em blue solid;
+  height:5em;
+  width:55em;
+  justify-content: center;
+
+}
