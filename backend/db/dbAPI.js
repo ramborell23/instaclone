@@ -1,4 +1,5 @@
 const db = require("./index");
+const helpers = require('../auth/helpers');
 
 const getUserByUsername = (username, callback) => {
   db
@@ -13,14 +14,16 @@ const getUserByUsername = (username, callback) => {
 };
 
 const registerUser = (user, callback) => {
-    const newUser = {
-        username: user.username,
-        passwordDigest: authHelpers.generatePasswordDigest(user.password)
-    }
-
-    db.none('INSERT INTO users(username, passport_digest) VALUES (${username}, ${passwordDigest})', newUser)
-    .then(() => callback(null))
-    .catch(err => callback(err))
+  const newUser = {
+      userName: user.username,
+      fullName: user.fullname,
+      passwordDigest: helpers.generatePasswordDigest(user.password),
+      profilePicUrl: user.profilePicUrl    
+  }
+  db.none('INSERT INTO users(username, fullname, password_digest, profile_pic)' +
+          'VALUES (${userName}, ${fullName}, ${passwordDigest}, ${profilePicUrl})', newUser)
+  .then(() => callback(null))
+  .catch(err => callback(err))
 }
 
 const getPosts = (username, callback) => {

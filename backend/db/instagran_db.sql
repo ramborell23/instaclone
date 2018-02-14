@@ -8,7 +8,10 @@ CREATE TABLE users (
     username VARCHAR UNIQUE,
     fullname VARCHAR,
     password_digest VARCHAR,
-    profile_pic VARCHAR
+    profile_pic VARCHAR,
+    number_of_posts int,
+    number_of_followers int,
+    number_of_following int
 );
 
 CREATE TABLE followInfo (
@@ -23,10 +26,10 @@ CREATE TABLE posts (
     likes json
 );
 
-INSERT INTO users (username, fullname, password_digest, profile_pic)
-VALUES ('mk_johnson17', 'Tyler Johnson', '1234hey', 'https://www.famousbirthdays.com/faces/creator-tyler-image.jpg'),
-       ('mm_tin23', 'Mike Martinez', 'abcd', 'https://resources.tidal.com/images/2d76cf9f/e8ee/4a9f/91eb/464e39716d0d/320x320.jpg'),
-       ('nkabrown', 'Nathen Brown', '2bits', 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/qrfrMs0JNAnqocUwIwnqdulEIeF.jpg');
+INSERT INTO users (username, fullname, password_digest, profile_pic, number_of_posts,number_of_followers,number_of_following)
+VALUES ('mk_johnson17', 'Tyler Johnson', '1234hey', 'https://www.famousbirthdays.com/faces/creator-tyler-image.jpg', 1, 2, 1),
+       ('mm_tin23', 'Mike Martinez', 'abcd', 'https://resources.tidal.com/images/2d76cf9f/e8ee/4a9f/91eb/464e39716d0d/320x320.jpg', 1, 1, 0),
+       ('nkabrown', 'Nathen Brown', '2bits', 'https://image.tmdb.org/t/p/w300_and_h450_bestv2/qrfrMs0JNAnqocUwIwnqdulEIeF.jpg', 3, 0, 0);
 
 INSERT INTO followInfo (owner_id, follower_id)
 VALUES (1,2),

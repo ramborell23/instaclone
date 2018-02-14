@@ -1,5 +1,5 @@
 var pgp = require("pg-promise")({});
-var connectionString = "postgres://localhost/userlist2";
+var connectionString = "postgres://localhost/instagran_db";
 var db = pgp(connectionString);
 
 module.exports = db;
