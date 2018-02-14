@@ -4,7 +4,7 @@ CREATE DATABASE instagran_db;
 \c instagran_db;
 
 CREATE TABLE users (
-    ID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     username VARCHAR UNIQUE,
     fullname VARCHAR,
     password_digest VARCHAR,
@@ -15,12 +15,13 @@ CREATE TABLE users (
 );
 
 CREATE TABLE followInfo (
-    owner_id int,
-    follower_id int
+    follow_id SERIAL PRIMARY KEY,
+    owner_id int references users(id),  /*Foreing key*/
+    follower_id int references users(id) /*Foreing key*/
 );
 
 CREATE TABLE posts (
-    ID SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     owner_id int,
     imageUrl VARCHAR,
     likes json
