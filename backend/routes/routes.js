@@ -48,25 +48,6 @@ router.get('/logout', (req, res, next) => {
   }
 })
 
-router.get('/profile', (req, res, next) => {
-    if(req.user){
-      dbAPI.getUserByUsername(user.username, (err) => {
-          res.status('200')
-          .json({
-              username: req.user.username,
-              message: "profile fetched"
-          })
-      })
-      }else{
-          res.status('401')
-          .json({
-              username:null,
-              message: "User needs to login",
-              err: null
-          })
-      }
-  })
-
 router.get('/feed', (req,res,next) => {
   if(req.user){
     dbAPI.getFeed(user.username, (err) => {
