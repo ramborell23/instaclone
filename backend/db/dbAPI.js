@@ -28,6 +28,14 @@ const registerUser = (user, callback) => {
   .then(() => callback(null))
   .catch(err => callback(err))
 }
+//expecting an obj for our post
+const addPosts = (postObj, callback) => {
+  db.none('INSERT INTO posts(owner_id, imageurl, likes) VALUES (${ownerId}, ${imageUrl}, ${likes} )', postObj)
+  .then(() => callback(null))
+  .catch(err => callback(err))
+}
+
+// const follow = ()
 
 const getPosts = (username, callback) => {
   db
@@ -38,6 +46,12 @@ const getPosts = (username, callback) => {
     .then(data => callback(null, data))
     .catch(err => callback(err, false));
 };
+
+const postLikes = (likesObj, callback) => {
+  db.none('UPDATE posts SET likes = ${likes} WHERE id = ${id}}', likesObj)
+  .then(() => callback(null))
+  .catch(err => callback(err))
+}
 
 const getFeed = (username, callback) => {
   db
@@ -51,7 +65,9 @@ const getFeed = (username, callback) => {
 
 module.exports = {
   getUserByUsername: getUserByUsername,
+  registerUser: registerUser,
+  addPosts: addPosts,
   getPosts: getPosts,
-  getFeed: getFeed,
-  registerUser: registerUser
+  postLike: postLikes,
+  getFeed: getFeed
 };
