@@ -102,6 +102,40 @@ router.post("/newpost", (req, res, next) => {
   }
 });
 
+router.post("/likepost", (req,res,next) => {
+    if(req.user){
+        const newlike = {
+            likedBy: req.user.username,
+            postId: req.body.postId
+        }
+        dbAPI.postlikes(newlike, err => {
+            res.status("200").json({
+                message: "liked added"
+            })
+        })
+    }else {
+        res.status("401").json({
+          username: null,
+          message: "User needs to login",
+          err: null
+        });
+      }
+
+})
+
+router.get("/likes", (req, res, next) => {
+    const postId = {
+        postId: req.body.postId
+    }
+
+    if(req.user){
+        dbAPI.getLikes(postId, err => {
+            res.status("200").json({
+                
+            })
+        })
+    }
+})
 //Test route problems when deserializing
 router.get("/alejo", (req, res, next) => {
   console.log("USER COMMING TO /alejo", req.user);
