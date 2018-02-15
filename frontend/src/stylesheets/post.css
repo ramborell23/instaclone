@@ -1,0 +1,46 @@
+/*css for individual post*/  
+/*css for individual post*/  
+.post {
+  width: 50%;
+  height: 50%;
+  overflow: hidden;
+  border: 2px solid black
+}
+
+.header{
+  border: 2px solid red
+}
+
+.header>img{
+  border-radius: 50%;
+  width: 20%
+}
+
+.header>p {
+  display: inline;
+}
+
+.footer{
+  border: 2px solid blue
+}
+
+.footer-buttons{
+  border: 2px solid purple;
+}
+
+.footer-buttons>.heart{
+  width: 1.8em;
+}
+
+.footer-buttons>.bubble{
+  width: 1.5em;
+}
+
+.post-body {
+  width: 200%;
+  height: 300%;
+}
+
+img {
+  width: 50%;
+}

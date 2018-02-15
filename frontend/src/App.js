@@ -1,81 +1,75 @@
-import React from "react";
-import { Route, Link, Switch } from "react-router-dom";
-import "./App.css";
-import Test from "./Users/users";
-import UserFeed from "./Users/UserFeed";
+import React, { Component } from 'react';
+import{Route, Link, Switch} from "react-router-dom";
+import logo from './instagran.jpg';
+import './App.css';
+import Users from "./Users/Users";
+import axios from "axios";
 
-const testFeed =[
-  {
-     user_profile_picture:{
-         img :""
-     },
-     user_post:{
-         img :""
-     },
-     user_name:{
-         name :""
-     },
-     user_caption:{
-         caption :""
-     },
- }
- ]
-class App extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      searchValue: "",
-    }
+import LoginForm from './Users/LoginForm';
+import SignupForm from './Users/SignupForm';
+import Feed from './Users/Feed';
+
+const Footer = ({renderLogin, clickHandler}) => {
+  var footerMessage="";
+  var textlink="";
+  if(renderLogin === true){
+    footerMessage="Don't have an account?  ";
+    textlink="Sing up";
+  } else{
+    footerMessage="Have an account?  ";
+    textlink="Log in"
   }
-  handleSearchBar = (e) => {
-    this.setState({
-      searchValue: e.target.value,
+  return(
+    <div className="App-register">
+       <br/> 
+       {footerMessage}
+       <a onClick={clickHandler}>
+       <font color="#3897f0"> {textlink}</font> </a> 
+    </div>
+  )
+}
+
+
+class App extends Component {
+  state = { 
+    user: {},
+    message: "", 
+    renderLoginForm: false,
+    loggedIn: false
+  };
+
+  toggleForms = () => {
+   const { renderLoginForm } = this.state
+    this.setState({renderLoginForm: !renderLoginForm})
+  }
+  
+  setUser = (user) => {
+    this.setState({ 
+      user: user,
+      loggedIn: true 
     })
   }
 
-  renderUserFeed = () => {
-    const {userPosts} = this.state
-    return <UserFeed testFeed={testFeed} />;
-  };
+   render() {
+    console.log('APP STATE ==>', this.state)
+    console.dir(this.toggleForms)
 
-  render() {
-    const { searchValue } = this.state
+    const { usernameInput, passwordInput, message, renderLoginForm, loggedIn } = this.state;
+    if(loggedIn){
+      return(<Feed/>)
+    }
+
     return (
-      <div>
-        <div class="navDiv">
-          <div class="container">
-
-            <label>
-              <Link to="/">
-                <img class="headerImage1 " src="https://multirotor.mst.edu/wp-content/uploads/sites/19/2016/09/instaicon.png" alt="" />
-              </Link> {"  "}
-            </label>
-
-            <label id="searchbox">
-              <input
-                type="text"
-                name="search"
-                placeholder="Search"
-                value={searchValue}
-                onChange={this.handleSearchBar}
-              />
-            </label>
-
-            <label id="extend_nav">
-              <Link to="/users">
-                <img class="headerImage2 " src="http://www.pngall.com/wp-content/uploads/2016/04/Instagram-Heart-Transparent.png" alt="" />
-              </Link> {"  "}
-              <Link to="/users">
-                <img class="headerImage2" src="https://images.vexels.com/media/users/3/147103/isolated/preview/e9bf9a44d83e00b1535324b0fda6e91a-instagram-profile-line-icon-by-vexels.png" alt="" />
-              </Link> {"  "}
-              {"  "}
-            </label>
-          </div>
+      <div className="App">
+        <div className="App-frontpage">
+          {renderLoginForm ? <SignupForm setUser={this.setUser}/> : <LoginForm setUser={this.setUser}/> }
+          <Footer renderLogin={this.state.renderLogin} clickHandler={this.toggleForms} />
         </div>
-         <Route exact path="/" render={this.renderUserFeed} /> 
-        <Route path="/users" component={Test} />
       </div>
-    )
+    );
   }
 }
+
 export default App;
+
+
