@@ -85,9 +85,4 @@ router.post("/post/:likeId", loginRequired, (req, res, next) => {
 router.get("/get/:postId", loginRequired, (req, res, next) => {
   const postId = req.params.postId;
 
-  dbAPI.getLikes(postId, (err, data) => {
-    res.status("200").json(data.map(elem => elem.liked_by));
-  });
-});
-
 module.exports = router;
