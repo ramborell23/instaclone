@@ -70,6 +70,12 @@ const getFeed = (username, callback) => {
     .catch(err => callback(err, false));
 };
 
+const addFollower = (ownerId, followerId, callback) => {
+  db.none('INSERT INTO followinfo (owner_id, follower_id) VALUES(${ownerId}, ${followerId})', {ownerId, followerId})
+    .then(() => callback(null))
+    .catch(err => callback(err, false))
+}
+
 module.exports = {
   getUserByUsername: getUserByUsername,
   registerUser: registerUser,
@@ -77,5 +83,6 @@ module.exports = {
   getPosts: getPosts,
   postLike: postLikes,
   getLikes: getLikes,
-  getFeed: getFeed
+  getFeed: getFeed,
+  addFollower: addFollower,
 };

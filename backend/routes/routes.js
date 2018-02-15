@@ -136,11 +136,15 @@ router.get("/likes", (req, res, next) => {
         })
     }
 })
-//Test route problems when deserializing
-router.get("/alejo", (req, res, next) => {
-  console.log("USER COMMING TO /alejo", req.user);
-  res.status("200").json({
-    message: "Hello Alejo"
-  });
-});
+
+router.post('/follow/:ownerId', /*loginRequired,*/(req, res, next) => {  
+  const followerId = req.user.id;
+  const ownerId = req.params.ownerId;
+  dbAPI.addFollower(ownerId, followerId, (err, data) => {
+    if(err) next(err);
+    res.status(200)
+       .json({message: `user ${followerId} is now following ${ownerId}`});
+  })
+})
+
 module.exports = router;
