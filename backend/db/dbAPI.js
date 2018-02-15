@@ -30,7 +30,7 @@ const registerUser = (user, callback) => {
 }
 //expecting an obj for our post
 const addPosts = (postObj, callback) => {
-  db.none('INSERT INTO posts(owner_id, imageurl, likes) VALUES (${ownerId}, ${imageUrl}, ${likes} )', postObj)
+  db.none('INSERT INTO posts(owner_id, imageurl) VALUES (${ownerId}, ${imageUrl})', postObj)
   .then(() => callback(null))
   .catch(err => callback(err))
 }
@@ -48,13 +48,15 @@ const getPosts = (username, callback) => {
 };
 
 const postLikes = (likesObj, callback) => {
-  db.none('UPDATE posts SET likes = ${likedBy} WHERE id = ${id}}', likesObj)
+  db
+  .none(
+    "INSERT INTO likesTable(post_id, liked_by) VALUES (${postId}, ${likedBy})", likesObj)
   .then(() => callback(null))
   .catch(err => callback(err))
-}
+};
 
 const getLikes = (postId, callback) => {
-  db.any('SELECT likes FROM posts WHERE id =${postId}', {postId:postId})
+  db.any('SELECT liked_by FROM likesTable WHERE post_id =${postId}', {postId:postId})
   .then(data => callback(null, data))
   .catch(err => callback(err, false))
 }
@@ -75,7 +77,7 @@ module.exports = {
   registerUser: registerUser,
   addPosts: addPosts,
   getPosts: getPosts,
-  postLike: postLikes,
+  postLikes: postLikes,
   getLikes: getLikes,
   getFeed: getFeed
 };

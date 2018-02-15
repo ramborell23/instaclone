@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("../auth/passport");
 const dbAPI = require("../db/dbAPI");
+const { loginRequired } = require("../auth/helpers");
 
 router.post("/signup", (req, res, next) => {
   const user = req.body;
@@ -26,121 +27,67 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
   });
 });
 
-router.get("/logout", (req, res, next) => {
-  if (req.user) {
-    req.logout();
-    res.status("200").json({
-      user: null,
-      message: "Log out success",
-      err: null
-    });
-  } else {
-    //Think about a better way to handle/see this
-    res.status("401").json({
-      user: null,
-      message: "User need to be logged in for Log out",
-      err: null
-    });
-  }
-});
-
-router.get("/feed", (req, res, next) => {
-  if (req.user) {
-    dbAPI.getFeed(req.user.username, (err, data) => {
-      res.status("200").json({
-        username: req.user.username,
-        feed: data,
-        message: "Feed has been successfully fetched"
-      });
-    });
-  } else {
-    res.status("401").json({
-      username: null,
-      message: "User needs to login",
-      err: null
-    });
-  }
-});
-
-router.get("/posts", (req, res, next) => {
-  if (req.user) {
-    dbAPI.getPosts(req.user.username, (err, data) => {
-      res.status("200").json({
-        username: req.user.username,
-        posts: data,
-        message: "posts are fetched"
-      });
-    });
-  } else {
-    res.status("401").json({
-      username: null,
-      message: "User needs to login",
-      err: null
-    });
-  }
-});
-
-router.post("/newpost", (req, res, next) => {
-  const newPost = {
-    ownerId: req.user.id,
-    imageUrl: req.body.imageUrl,
-    likes: JSON.stringify([]) //might have to change
-  };
-
-  if (req.user) {
-    dbAPI.addPosts(newPost, err => {
-      res.status("200").json({
-        message: "post added"
-      });
-    });
-  } else {
-    res.status("401").json({
-      username: null,
-      message: "User needs to login",
-      err: null
-    });
-  }
-});
-
-router.post("/likepost", (req,res,next) => {
-    if(req.user){
-        const newlike = {
-            likedBy: req.user.username,
-            postId: req.body.postId
-        }
-        dbAPI.postlikes(newlike, err => {
-            res.status("200").json({
-                message: "liked added"
-            })
-        })
-    }else {
-        res.status("401").json({
-          username: null,
-          message: "User needs to login",
-          err: null
-        });
-      }
-
-})
-
-router.get("/likes", (req, res, next) => {
-    const postId = {
-        postId: req.body.postId
-    }
-
-    if(req.user){
-        dbAPI.getLikes(postId, err => {
-            res.status("200").json({
-                
-            })
-        })
-    }
-})
-//Test route problems when deserializing
-router.get("/alejo", (req, res, next) => {
-  console.log("USER COMMING TO /alejo", req.user);
+router.get("/logout", loginRequired, (req, res, next) => {
+  req.logout();
   res.status("200").json({
-    message: "Hello Alejo"
+    user: null,
+    message: "Log out success",
+    err: null
   });
 });
+
+router.get("/feed", loginRequired, (req, res, next) => {
+  dbAPI.getFeed(req.user.username, (err, data) => {
+    res.status("200").json({
+      username: req.user.username,
+      feed: data,
+      message: "Feed has been successfully fetched"
+    });
+  });
+});
+
+router.get("/posts", loginRequired, (req, res, next) => {
+  dbAPI.getPosts(req.user.username, (err, data) => {
+    res.status("200").json({
+      username: req.user.username,
+      posts: data,
+      message: "posts are fetched"
+    });
+  });
+});
+
+router.post("/newpost", loginRequired, (req, res, next) => {
+  const newPost = {
+    ownerId: req.user.id,
+    imageUrl: req.body.imageUrl
+  };
+
+  dbAPI.addPosts(newPost, err => {
+    res.status("200").json({
+      message: "post added"
+    });
+  });
+});
+
+router.post("/post/:likeId", loginRequired, (req, res, next) => {
+  const newlike = {
+    postId: Number(req.params.likeId),
+    likedBy: req.user.username
+  };
+
+  dbAPI.postLikes(newlike, err => {
+    res.status("200").json({
+      message: "liked added"
+    });
+  });
+});
+
+router.get("/get/:postId", loginRequired, (req, res, next) => {
+  const postId = req.params.postId;
+
+  dbAPI.getLikes(postId, (err, data) => {
+    res.status("200").json(data.map(elem => elem.liked_by));
+  });
+});
+
 module.exports = router;
