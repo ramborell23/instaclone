@@ -72,7 +72,7 @@ class App extends React.Component {
             </label>
           </div>
         </div>
-        <Route exact path="/" render={this.renderUserFeed} />
+         <Route exact path="/" render={this.renderUserFeed} /> 
         <Route path="/users" component={Test} />
       </div>
     )
