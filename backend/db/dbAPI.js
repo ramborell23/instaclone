@@ -13,29 +13,25 @@ const getUserByUsername = (username, callback) => {
     });
 };
 
-const registerUser = (user, callback) => {
+const registerUser = (req, callback) => {
   const newUser = {
-      userName: user.username,
-      fullName: user.fullname,
-      passwordDigest: helpers.generatePasswordDigest(user.password),
-      profilePicUrl: user.profilePicUrl,
-      numberOfPosts: 0,
-      numberOfFollowers: 0,
-      numberOfFollowing: 0   
-  }
-  db.none('INSERT INTO users(username, fullname, password_digest, profile_pic, number_of_posts, number_of_followers, number_of_following )' +
-          'VALUES (${userName}, ${fullName}, ${passwordDigest}, ${profilePicUrl}, ${numberOfPosts}, ${numberOfFollowers}, ${numberOfFollowing})', newUser)
-  .then(() => callback(null))
-  .catch(err => callback(err))
-}
-//expecting an obj for our post
-const addPosts = (postObj, callback) => {
-  db.none('INSERT INTO posts(owner_id, imageurl, likes) VALUES (${ownerId}, ${imageUrl}, ${likes} )', postObj)
-  .then(() => callback(null))
-  .catch(err => callback(err))
+      username: req.body.username,
+      fullname: req.body.fullname,
+      passwordDigest: helpers.generatePasswordDigest(req.body.password),
+      profilePicUrl: req.body.profilePicUrl  
 }
 
-// const follow = ()
+  return db.none('INSERT INTO users(username, fullname, password_digest, profile_pic )' +
+          'VALUES (${username}, ${fullname}, ${passwordDigest}, ${profilePicUrl})', newUser)
+  .then(() => callback(null, newUser))
+  .catch(err => callback(err, false))
+}
+
+const addPost = (postObj, callback) => {
+  db.none('INSERT INTO posts(owner_id, imageurl) VALUES (${ownerId}, ${imageUrl})', postObj)
+  .then(() => callback(null))
+  .catch(err => callback(err))
+}
 
 const getPosts = (username, callback) => {
   db
@@ -47,24 +43,26 @@ const getPosts = (username, callback) => {
     .catch(err => callback(err, false));
 };
 
-const postLikes = (likesObj, callback) => {
-  db.none('UPDATE posts SET likes = ${likedBy} WHERE id = ${id}}', likesObj)
+const addLike = (likesObj, callback) => {
+  db
+  .none(
+    "INSERT INTO likesTable(post_id, liked_by) VALUES (${postId}, ${likedBy})", likesObj)
   .then(() => callback(null))
   .catch(err => callback(err))
-}
+};
 
-const getLikes = (postId, callback) => {
-  db.any('SELECT likes FROM posts WHERE id =${postId}', {postId:postId})
+const getLikes = (userId, callback) => {
+  db.any('SELECT * FROM likesTable WHERE post_id = ANY(SELECT id FROM posts WHERE owner_id = ANY(SELECT owner_id FROM followinfo WHERE follower_id = ${userId}))', {userId:userId})
   .then(data => callback(null, data))
   .catch(err => callback(err, false))
 }
 
 
-const getFeed = (username, callback) => {
+const getFeed = (userId, callback) => {
   db
     .any(
-      "SELECT * FROM posts WHERE owner_id = ANY(SELECT follower_id FROM followinfo INNER JOIN users ON followinfo.owner_id = users.id WHERE users.username = ${username})",
-      {username:username}
+      "SELECT * FROM posts WHERE owner_id = ANY(SELECT owner_id FROM followinfo INNER JOIN users ON followinfo.owner_id = users.id WHERE follower_id = ${userId})",
+      {userId:userId}
     )
     .then(data => callback(null, data))
     .catch(err => callback(err, false));
@@ -76,13 +74,21 @@ const addFollower = (ownerId, followerId, callback) => {
     .catch(err => callback(err, false))
 }
 
+const getFollows = (callback) => {
+  db
+  .any("SELECT owner_id, follower_id from followInfo")
+  .then(data => callback(null, data))
+  .catch(err => callback(err, false))
+}
+
 module.exports = {
   getUserByUsername: getUserByUsername,
   registerUser: registerUser,
-  addPosts: addPosts,
+  addPost: addPost,
   getPosts: getPosts,
-  postLike: postLikes,
+  addLike: addLike,
   getLikes: getLikes,
   getFeed: getFeed,
   addFollower: addFollower,
+  getFollows: getFollows
 };
