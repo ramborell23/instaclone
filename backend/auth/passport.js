@@ -32,7 +32,7 @@ passport.use(
           numberOfFollowers: user.number_of_followers,
           numberOfFollowing: user.number_of_following
         }
-        console.log(user)
+        console.log('LOCALSTRATEGY ==>', user)
         return done(null, userWithoutPassword)
       })
     })

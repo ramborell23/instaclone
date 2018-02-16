@@ -17,8 +17,8 @@ router.post("/signup", (req, res, next) => {
           if(err) { return next(err) }
           res.status(200).json({
             status: "success",
-            data: user,
-            message: "Registered one user"
+            user: user,
+            message: "Welcome you have signed up succesfully and logged in automaticlly"
           });
  
         })
@@ -42,14 +42,5 @@ router.post("/signup", (req, res, next) => {
       err: null
     });
   });
-
-  router.get("/alejo", loginRequired, (req, res, next) => {
-    console.log('REQ.USER?? ===>', req.user)
-    res.status("200").json({
-      user: null,
-      message: "reached /alejo success",
-      err: null
-    });
-  })
 
   module.exports = router;

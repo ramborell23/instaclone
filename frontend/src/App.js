@@ -62,7 +62,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-frontpage">
-          {renderLoginForm ? <SignupForm setUser={this.setUser}/> : <LoginForm setUser={this.setUser}/> }
+          {renderLoginForm ? <LoginForm setUser={this.setUser}/> : <SignupForm setUser={this.setUser}/> } 
           <Footer renderLogin={this.state.renderLogin} clickHandler={this.toggleForms} />
         </div>
       </div>

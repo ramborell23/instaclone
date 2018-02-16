@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { Component } from 'react';
+import React from 'react';
 import{Route, Link, Switch} from "react-router-dom";
 
 
@@ -38,12 +38,9 @@ class SingupForm extends React.Component {
     axios
       .post("/signup", newUser) 
       .then(res => {
-        console.log(res.data);
-        this.setState({
-          username: "",
-          password: "",
-          message: "Inserted User"
-        });
+        const user = res.data.user;
+        this.props.setUser(user)
+        
       })
       .catch(err => {
         console.log("error: ", err);
@@ -57,7 +54,7 @@ class SingupForm extends React.Component {
 
   render() {
     const { username, password, fullname, profilePicUrl, message } = this.state;
-    console.log('SIGNUP FORM STATE', this.state)
+    //console.log('SIGNUP FORM STATE', this.state)
     return (
       <div className="App-newUser">
         <img src="https://image.ibb.co/mFYeqn/instagran.jpg" alt="instagran logo" /> <br/>

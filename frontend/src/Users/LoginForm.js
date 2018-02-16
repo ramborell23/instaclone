@@ -22,13 +22,11 @@ class LoginForm extends React.Component {
       username: this.state.username,
       password: this.state.password
     }
-    //test
-    this.props.setUser(user)
-  /*
+  
     axios
       .post("/login", user)
       .then(res => {
-        this.props.setUser(res.data);
+        this.props.setUser(res.data.user);
       })
       .catch(err => {
         this.setState({
@@ -37,7 +35,7 @@ class LoginForm extends React.Component {
           message: "username/password not found"
         });
       });
-      */
+      
   };
 
   render() {
