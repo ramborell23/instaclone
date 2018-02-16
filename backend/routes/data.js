@@ -4,6 +4,16 @@ const passport = require("../auth/passport");
 const dbAPI = require("../db/dbAPI");
 const { loginRequired } = require("../auth/helpers");
 
+router.get("/user", loginRequired), (req, res, next) => {
+  dbAPI.getUserByUsername(req.user.username, (err, data) => {
+    if(err){next(err)};
+    res.status("200").json({
+      feed: data,
+      message: "Userinfo successfully fetched"
+    });
+  })
+}
+
 router.get("/feed", loginRequired, (req, res, next) => {
   dbAPI.getFeed(req.user.id, (err, data) => {
     if(err){next(err)};
